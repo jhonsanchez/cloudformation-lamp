@@ -1,0 +1,17 @@
+#!/bin/bash -ex
+sudo su
+yum localinstall -y https://dev.mysql.com/get/mysql80-community-release-el7-1.noarch.rpm
+yum install -y mysql-community-server
+systemctl enable mysqld
+systemctl start mysqld
+mysql -u root \"-p$(grep -oP '(?<=root@localhost\\: )\\S+' /var/log/mysqld.log)\" -e \"ALTER USER 'root'@'localhost' IDENTIFIED BY '${DbMasterPassword}'\" --connect-expired-password
+mysql -u root \"-p${DbMasterPassword}\" -e \"CREATE USER '${DbMasterUsername}'@'%' IDENTIFIED BY '${DbMasterPassword}'\"
+mysql -u root \"-p${DbMasterPassword}\" -e \"GRANT ALL PRIVILEGES ON *.* TO '${DbMasterUsername}'@'%'\"
+mysql -u root \"-p${DbMasterPassword}\" -e \"FLUSH PRIVILEGES\"
+
+
+mysql -u root \"-p$(grep -oP '(?<=root@localhost\\: )\\S+' /var/log/mysqld.log)\" -e \"ALTER USER 'root'@'localhost' IDENTIFIED BY 'smartvm'\" --connect-expired-password
+mysql -u root \"-ppassword\" -e \"CREATE USER 'wordpress'@'%' IDENTIFIED BY 'smartvm'\"
+mysql -u root \"-ppassword\" -e \"GRANT ALL PRIVILEGES ON *.* TO 'wordpress'@'%'\"
+mysql -u root \"-ppassword\" -e \"FLUSH PRIVILEGES\"
+		

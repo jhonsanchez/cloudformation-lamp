@@ -1,0 +1,15 @@
+
+
+
+aws cloudformation delete-stack --stack-name test003
+
+
+aws cloudformation create-stack --stack-name test004 --template-url https://bpwordpresscfbucket.s3.amazonaws.com/Cloudformation-WordPress.json
+
+
+
+aws s3 sync . s3://bpwordpresscfbucket
+
+
+
+aws s3 sync s3://bpwordpresscfbucket .

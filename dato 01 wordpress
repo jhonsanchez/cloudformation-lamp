@@ -1,0 +1,4 @@
+mysql -u root "-p$(grep -oP '(?<=root@localhost\: )\S+' /var/log/mysqld.log)" -e "ALTER USER 'root'@'localhost' IDENTIFIED BY 'Breast35b.'" --connect-expired-password
+
+cat /var/log/cloud-init-output.log
+

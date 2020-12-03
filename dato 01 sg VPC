@@ -1,0 +1,94 @@
+Test004
+
+VPC
+vpc-0e461f11da6fbaad0
+IPv4 CIDR: 10.0.0.0/16
+
+subnet-08798f40d9986d544
+Network border group: us-east-1
+Availability Zone ID: use1-az6
+VPC: vpc-0e461f11da6fbaad0
+IPv4 CIDR: 10.0.1.0/24
+Route table: rtb-0dbdb49e363560f9d
+
+subnet-0b7b47517c244886b
+Network border group: us-east-1
+Availability Zone ID: use1-az6
+VPC : vpc-0e461f11da6fbaad0
+IPv4 CIDR: 10.0.2.0/24
+Route table: rtb-0ec1ef973e8681764
+Network ACL: cl-0d621ecd1d9556f06
+
+SG01
+ID del grupo de seguridad: sg-0de2b154ecd6dc105
+test004-SecurityGroupInstance-1XWD76VLNFB07
+ID de la VPC: vpc-0e461f11da6fbaad0
+***Entrada***
+Tipo            Protocolo      Intervalo de puertos        Origen                             Descripción: opcional
+HTTP	        TCP	                    80  	          0.0.0.0/0	                                 -
+SSH	            TCP	                    22	              0.0.0.0/0	                                 -
+MYSQL/Aurora	TCP	                    3306	          0.0.0.0/0	                                 -
+HTTPS	        TCP	                    443	              0.0.0.0/0                                  -
+***Salida***
+Tipo            Protocolo      Intervalo de puertos        Origen                             Descripción: opcional
+Todo el tráfico	Todo	                Todo	          0.0.0.0/0                             	 -
+
+SG02
+ID del grupo de seguridad: sg-085bc893ef274a693
+default VPC security group
+ID de la VPC: vpc-0e461f11da6fbaad0
+***Entrada***
+Tipo              Protocolo      Intervalo de puertos        Origen                             Descripción: opcional
+Todo el tráfico	    Todo	              Todo	             sg-085bc893ef274a693 (default)            -
+***Salida***
+Tipo              Protocolo      Intervalo de puertos        Origen                             Descripción: opcional
+Todo el tráfico	    Todo	              Todo	             0.0.0.0/0                              	-
+
+
+
+ "SecurityGroupInstance": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "SG for EC2 Instance",
+        "SecurityGroupIngress": [
+          {
+            "IpProtocol": "tcp",
+            "FromPort": "22",
+            "ToPort": "22",
+            "CidrIp": {
+              "Ref": "SSHLocation"
+            }
+          },
+          {
+            "IpProtocol": "tcp",
+            "FromPort": "80",
+            "ToPort": "80",
+            "CidrIp": "0.0.0.0/0"
+          },
+          {
+            "IpProtocol": "tcp",
+            "FromPort": "3306",
+            "ToPort": "3306",
+            "CidrIp": {
+              "Ref": "SSHLocation"
+            }
+          }
+        ],
+        "Tags": [
+          {
+            "Key": "Application",
+            "Value": {
+              "Ref": "AWS::StackName"
+            }
+          }
+        ],
+        "VpcId": {
+          "Ref": "VPC"
+        }
+      }
+    },
+
+
+
+
+
