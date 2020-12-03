@@ -532,7 +532,7 @@
                 " --resource WebInstance\n",
                 "yum makecache \n",
                 "yum install unzip \n",
-                "yum -y install httpd php-mysql\n",
+                "yum -y install httpd \n",
                 "yum -y install php\n",
                 "yum install -y amazon-linux-extras \n",
                 "unzip awscliv2.zip \n",
